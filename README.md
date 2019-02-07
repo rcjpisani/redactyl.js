@@ -1,9 +1,9 @@
-# redactyl
-Redact sensitive information from JSON for logging
+# redactyl.js
+Redact sensitive information from JSON for logging (Node.js)
 
 ## Installation
 ```sh
-npm install -S redactyl
+npm install -S redactyl.js
 ```
 
 ## Quick Start
@@ -11,7 +11,7 @@ npm install -S redactyl
 ### Javascript
 
 ```javascript
-const Redactyl = require('redactyl');
+const Redactyl = require('redactyl.js');
 let properties = [ 'apiKey', 'password', 'phone' ];
 let customText = '[REDACTED]';
 let redactyl = new Redactyl({

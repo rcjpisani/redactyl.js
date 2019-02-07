@@ -1,0 +1,33 @@
+{
+  "name": "redactyl",
+  "version": "0.0.0",
+  "description": "Redact sensitive information from JSON for logging",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test/*.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rcjpisani/redactyl.git"
+  },
+  "keywords": [
+    "redact",
+    "sensitive",
+    "information",
+    "scrub",
+    "secure",
+    "node"
+  ],
+  "author": "Robert Pisani",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rcjpisani/redactyl/issues"
+  },
+  "homepage": "https://github.com/rcjpisani/redactyl#readme",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "eslint": "^5.13.0",
+    "mocha": "^5.2.0",
+    "sinon": "^7.2.3"
+  }
+}

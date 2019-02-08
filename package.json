@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rcjpisani/redactyl.git"
+    "url": "git+https://github.com/rcjpisani/redactyl.js.git"
   },
   "keywords": [
     "redact",
@@ -21,9 +21,9 @@
   "author": "Robert Pisani",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/rcjpisani/redactyl/issues"
+    "url": "https://github.com/rcjpisani/redactyl.js/issues"
   },
-  "homepage": "https://github.com/rcjpisani/redactyl#readme",
+  "homepage": "https://github.com/rcjpisani/redactyl.js#readme",
   "devDependencies": {
     "chai": "^4.2.0",
     "eslint": "^5.13.0",

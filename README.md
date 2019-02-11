@@ -7,21 +7,16 @@ npm install -S redactyl.js
 ```
 
 ## Quick Start
-
-### Javascript
-
+Instantiate a new instance of Redactyl, specifying the properties you wish to redact
 ```javascript
 const Redactyl = require('redactyl.js');
-let properties = [ 'apiKey', 'password', 'phone' ];
-let customText = '[REDACTED]';
-let redactyl = new Redactyl({
-  'properties': properties,
-  'text': customText
-});
-// OR
-let redactyl = new Redactyl();
-redactyl.addProperties(properties).setText(customText);
 
+let redactyl = new Redactyl({
+  'properties': [ 'apiKey', 'password', 'phone' ]
+});
+```
+Then run your sensitive data through the `redact` function!
+```javascript
 const data = {
   'apiKey': 'a1b2c3',
   'password': 'P@$$w0rd',
@@ -29,10 +24,25 @@ const data = {
 };
 
 const redacted = redactyl.redact(data);
-
-console.log(redacted);
-// Output:
-// { apiKey: '[REDACTED]',
-//  password: '[REDACTED]',
-//    phone: '[REDACTED]' }
+/* Result:
+{
+    'apiKey': '[REDACTED]',
+    'password': '[REDACTED]',
+    'phone': '[REDACTED]'
+}
+*/
 ```
+
+### Constructor Options - *Object*
+- `properties` - `Array` - An array of property names that should be redacted.
+- `text` - `String` - Custom text to replace the redacted properties with.
+
+### API
+`addProperties`(`properties`)
+Add the names of properties that should be redacted.
+
+`setText`(`text`)
+Set the text to replace the redacted properties with. Default: [REDACTED]
+
+`redact`(`json`)
+Traverse through the specified JSON and replace *all* properties that match the property names set through the constructor options object, or the `setText` function.

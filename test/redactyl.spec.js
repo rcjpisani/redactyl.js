@@ -126,7 +126,7 @@ describe('Redactyl test suite', function () {
 
     let redacted = redactyl.redact(json);
 
-    expect(redactyl.redact.callCount).to.equal(4);
+    expect(redactyl.redact.calledTwice).to.equal(true);
     expect(typeof redacted).to.equal('object');
     for (let prop in redacted.arr[0]) {
       expect(redacted.arr[0][prop]).to.equal(DEFAULT_TEXT);

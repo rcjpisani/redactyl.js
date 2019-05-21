@@ -55,9 +55,7 @@ class Redactyl {
             redacted[prop][index] = this.redact(value);
           }
         });
-      }
-
-      if (this.isObject(redacted[prop])) {
+      } else if (this.isObject(redacted[prop])) {
         redacted[prop] = this.redact(redacted[prop]);
       }
     }

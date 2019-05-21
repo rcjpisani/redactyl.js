@@ -25,7 +25,7 @@ class Redactyl {
   }
 
   isObject(property) {
-    return (typeof property) === 'object' || Array.isArray(property);
+    return (typeof property) === 'object' && !Array.isArray(property);
   }
 
   setText(text) {
@@ -38,7 +38,7 @@ class Redactyl {
   redact(json) {
     let isObject = this.isObject(json);
 
-    if (!isObject) {
+    if (!isObject && !Array.isArray(json)) {
       throw new TypeError('A valid JSON object must be specified');
     }
 

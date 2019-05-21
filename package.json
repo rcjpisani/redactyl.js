@@ -24,6 +24,7 @@
     "url": "https://github.com/rcjpisani/redactyl.js/issues"
   },
   "homepage": "https://github.com/rcjpisani/redactyl.js#readme",
+  "types": "./src/index.d.ts",
   "devDependencies": {
     "chai": "^4.2.0",
     "eslint": "^5.13.0",

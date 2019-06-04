@@ -154,4 +154,34 @@ describe('Redactyl test suite', function () {
       expect(redacted.obj[prop]).to.equal(DEFAULT_TEXT);
     }
   });
+
+  it('Should redact array with objects', async function () {
+    const properties = [ 'apiKey', 'password', 'phone' ];
+    const redactyl = new Redactyl({ 'properties': properties });
+    sinon.spy(redactyl, 'redact');
+
+    const json = [
+      {
+        'apiKey': 'a1b2c3',
+        'password': 'P@$$w0rd',
+        'phone': 1234567890
+      },
+      {
+        'apiKey': 'a1b2c3',
+        'password': 'P@$$w0rd',
+        'phone': 1234567890
+      }
+    ];
+
+    const redacted = redactyl.redact(json);
+
+    expect(redactyl.redact.callCount).to.equal(3);
+    expect(Array.isArray(redacted)).to.equal(true);
+    expect(redacted.length).to.equal(2);
+    redacted.forEach((item) => {
+      for (const prop in item) {
+        expect(item[prop]).to.equal(DEFAULT_TEXT);
+      }
+    })
+  })
 });

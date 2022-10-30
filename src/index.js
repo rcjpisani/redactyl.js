@@ -25,7 +25,7 @@ class Redactyl {
   }
 
   isObject(property) {
-    return (typeof property) === 'object' && !Array.isArray(property);
+    return (typeof property) === 'object' && !Array.isArray(property) && property !== null;
   }
 
   setText(text) {

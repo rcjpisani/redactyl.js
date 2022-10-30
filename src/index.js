@@ -51,9 +51,7 @@ class Redactyl {
 
       if (Array.isArray(redacted[prop])) {
         redacted[prop].forEach((value, index) => {
-          if (this.isObject(value)) {
-            redacted[prop][index] = this.redact(value);
-          }
+          redacted[prop][index] = this.redact(value);
         });
       } else if (this.isObject(redacted[prop])) {
         redacted[prop] = this.redact(redacted[prop]);

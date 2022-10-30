@@ -1,7 +1,7 @@
 'use strict';
 
 class Redactyl {
-  constructor(options) {
+  constructor (options) {
     this.options = options || {};
     this.properties = [];
     this.text = '[REDACTED]';

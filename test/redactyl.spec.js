@@ -15,7 +15,7 @@ describe('Redactyl test suite', function () {
   });
 
   it('Should add properties from the configuration option', async function () {
-    let properties = ['apiKey', 'password', 'phone'];
+    let properties = [ 'apiKey', 'password', 'phone' ];
     let redactyl = new Redactyl({ 'properties': properties });
 
     expect(Array.isArray(redactyl.properties)).to.equal(true);
@@ -27,7 +27,7 @@ describe('Redactyl test suite', function () {
   });
 
   it('Should add properties from the addProperties function', async function () {
-    let properties = ['apiKey', 'password', 'phone'];
+    let properties = [ 'apiKey', 'password', 'phone' ];
     let redactyl = new Redactyl();
     redactyl.addProperties(properties);
 
@@ -53,7 +53,7 @@ describe('Redactyl test suite', function () {
   });
 
   it('Should chain add properties and custom text', async function () {
-    let properties = ['apiKey', 'password', 'phone'];
+    let properties = [ 'apiKey', 'password', 'phone' ];
     let redactyl = new Redactyl();
     redactyl.addProperties(properties).setText(CUSTOM_TEXT);
 
@@ -80,7 +80,7 @@ describe('Redactyl test suite', function () {
   });
 
   it('Should not redact any properties, invalid JSON', async function () {
-    let properties = ['apiKey', 'password', 'phone'];
+    let properties = [ 'apiKey', 'password', 'phone' ];
     let redactyl = new Redactyl({ 'properties': properties });
 
     try {
@@ -92,7 +92,7 @@ describe('Redactyl test suite', function () {
   });
 
   it('Should redact shallow JSON', async function () {
-    let properties = ['apiKey', 'password', 'phone'];
+    let properties = [ 'apiKey', 'password', 'phone' ];
     let redactyl = new Redactyl({ 'properties': properties });
     sinon.spy(redactyl, 'redact');
 
@@ -112,16 +112,16 @@ describe('Redactyl test suite', function () {
   });
 
   it('Should redact shallow JSON with an array', async function () {
-    let properties = ['apiKey', 'password', 'phone'];
+    let properties = [ 'apiKey', 'password', 'phone' ];
     let redactyl = new Redactyl({ 'properties': properties });
     sinon.spy(redactyl, 'redact');
 
     let json = {
-      'arr': [{
+      'arr': [ {
         'apiKey': 'a1b2c3',
         'password': 'P@$$w0rd',
         'phone': 1234567890
-      }]
+      } ]
     };
 
     let redacted = redactyl.redact(json);
@@ -134,7 +134,7 @@ describe('Redactyl test suite', function () {
   });
 
   it('Should redact shallow JSON with a nested array', async function () {
-    let properties = ['apiKey', 'password', 'phone'];
+    let properties = [ 'apiKey', 'password', 'phone' ];
     let redactyl = new Redactyl({ 'properties': properties });
     sinon.spy(redactyl, 'redact');
 
@@ -168,7 +168,7 @@ describe('Redactyl test suite', function () {
   });
 
   it('Should redact shallow JSON with an array', async function () {
-    let properties = ['apiKey', 'password', 'phone'];
+    let properties = [ 'apiKey', 'password', 'phone' ];
     let redactyl = new Redactyl({ 'properties': properties });
     sinon.spy(redactyl, 'redact');
 
@@ -190,7 +190,7 @@ describe('Redactyl test suite', function () {
   });
 
   it('Should redact JSON with a nested object', async function () {
-    let properties = ['apiKey', 'password', 'phone'];
+    let properties = [ 'apiKey', 'password', 'phone' ];
     let redactyl = new Redactyl({ 'properties': properties });
     sinon.spy(redactyl, 'redact');
 
@@ -212,7 +212,7 @@ describe('Redactyl test suite', function () {
   });
 
   it('Should redact array with objects', async function () {
-    const properties = ['apiKey', 'password', 'phone'];
+    const properties = [ 'apiKey', 'password', 'phone' ];
     const redactyl = new Redactyl({ 'properties': properties });
     sinon.spy(redactyl, 'redact');
 

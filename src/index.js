@@ -1,13 +1,19 @@
 'use strict';
 
+const getReplacer = require('./replacer');
+
 class Redactyl {
   constructor (options) {
     this.options = options || {};
     this.properties = [];
     this.text = '[REDACTED]';
+    this.replacer = getReplacer();
 
     this.addProperties(this.options.properties);
     this.setText(this.options.text);
+
+    if (this.options.replacer)
+      this.setReplacer(this.options.replacer);
   }
 
   addProperties(properties) {
@@ -35,6 +41,15 @@ class Redactyl {
     return this;
   }
 
+  setReplacer(fn) {
+    if ((typeof fn) !== 'function') {
+      throw new TypeError('Using a custom replacer expects a function to be passed');
+    }
+
+    this.replacer = fn;
+    return this;
+  }
+
   redact(json) {
     let isObject = this.isObject(json);
 
@@ -42,7 +57,7 @@ class Redactyl {
       throw new TypeError('A valid JSON object must be specified');
     }
 
-    let redacted = JSON.parse(JSON.stringify(json));
+    let redacted = JSON.parse(JSON.stringify(json, this.replacer));
 
     for (let prop in redacted) {
       if (this.properties.includes(prop)) {

@@ -4,7 +4,6 @@ const expect = require('chai').expect;
 const sinon = require('sinon');
 
 const Redactyl = require('..');
-const getReplacer = require('../src/replacer');
 
 const DEFAULT_TEXT = '[REDACTED]';
 const CUSTOM_TEXT = '[SECURED]';
@@ -293,12 +292,8 @@ describe('Redactyl test suite', function () {
   });
 
   it('Should replace circular references with the token "[CIRCULAR]"', async function () {
-    const redactyl = new Redactyl();
-
-    sinon.spy(redactyl, 'setReplacer');
-    redactyl.setReplacer(getReplacer());
-
-    expect(redactyl.setReplacer.callCount).to.equal(1);
+    const properties = [ 'apiKey', 'password', 'phone' ];
+    const redactyl = new Redactyl({ 'properties': properties });
 
     const json = {
       'apiKey': 'a1b2c3',

@@ -2,7 +2,7 @@
 // Project: https://github.com/rcjpisani/redactyl.js
 
 declare namespace Redactyl {
-  interface RedactData<Type extends object[] | object> {
+  interface RedactData<Type extends object[] | object = any> {
     <Type>(arg: Type): Type;
   }
 
@@ -23,8 +23,6 @@ declare namespace Redactyl {
      */
     replacer?: (key: string, value: RedactData) => RedactData;
   }
-
-  function getReplacer(): (key: string, value: RedactData) => RedactData;
 }
 
 declare class Redactyl {
@@ -52,6 +50,12 @@ declare class Redactyl {
    * @param properties Additional names of properties
    */
   addProperties(properties: string[]): Redactyl;
+
+  /**
+   * Set a custom replacer function for the stringification process
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#the_replacer_parameter|MDN}
+   */
+  setReplacer(fn: Redactyl.Options['replacer']): Redactyl;
 }
 
 export = Redactyl;

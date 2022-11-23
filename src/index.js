@@ -1,11 +1,13 @@
 'use strict';
 
+const getReplacer = require('./replacer');
+
 class Redactyl {
   constructor (options) {
     this.options = options || {};
     this.properties = [];
     this.text = '[REDACTED]';
-    this.replacer = undefined; // Backwards-compat for older versions using default JSON.stringify replacer
+    this.replacer = getReplacer();
 
     this.addProperties(this.options.properties);
     this.setText(this.options.text);

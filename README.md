@@ -4,6 +4,8 @@ Redact sensitive information from JSON for logging (Node.js)
 <p>
 <a href="https://www.npmjs.com/package/redactyl.js"><img alt="npm" src="https://img.shields.io/npm/v/redactyl.js"></a>
 <a href="https://www.npmjs.com/package/redactyl.js"><img alt="npm" src="https://img.shields.io/npm/dw/redactyl.js"></a>
+<a href="https://codecov.io/gh/rcjpisani/redactyl.js" ><img src="https://codecov.io/gh/rcjpisani/redactyl.js/branch/master/graph/badge.svg?token=5RH52T7NXD"/></a>
+<a href="https://conventionalcommits.org"><img alt="Conventional Commits" src="https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white"/></a>
 </p>
 
 ## Installation

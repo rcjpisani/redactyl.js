@@ -133,6 +133,62 @@ describe('Redactyl test suite', function () {
     }
   });
 
+  it('Should redact shallow JSON with a nested array', async function () {
+    let properties = [ 'apiKey', 'password', 'phone' ];
+    let redactyl = new Redactyl({ 'properties': properties });
+    sinon.spy(redactyl, 'redact');
+
+    let json = {
+      'arr': [
+        {
+          'apiKey': 'a1b2c3',
+          'password': 'P@$$w0rd',
+          'phone': 1234567890
+        },
+        [
+          {
+            'apiKey': 'a1b2c3',
+            'password': 'P@$$w0rd',
+            'phone': 1234567890
+          }
+        ]
+      ]
+    };
+
+    let redacted = redactyl.redact(json);
+
+    // expect(redactyl.redact.callCount).to.equal(4);
+    expect(typeof redacted).to.equal('object');
+    for (let prop in redacted.arr[0]) {
+      expect(redacted.arr[0][prop]).to.equal(DEFAULT_TEXT);
+    }
+    for (let prop in redacted.arr[1][0]) {
+      expect(redacted.arr[1][0][prop]).to.equal(DEFAULT_TEXT);
+    }
+  });
+
+  it('Should redact shallow JSON with an array', async function () {
+    let properties = [ 'apiKey', 'password', 'phone' ];
+    let redactyl = new Redactyl({ 'properties': properties });
+    sinon.spy(redactyl, 'redact');
+
+    let json = {
+      'arr': [{
+        'apiKey': 'a1b2c3',
+        'password': 'P@$$w0rd',
+        'phone': 1234567890
+      }]
+    };
+
+    let redacted = redactyl.redact(json);
+
+    expect(redactyl.redact.calledTwice).to.equal(true);
+    expect(typeof redacted).to.equal('object');
+    for (let prop in redacted.arr[0]) {
+      expect(redacted.arr[0][prop]).to.equal(DEFAULT_TEXT);
+    }
+  });
+
   it('Should redact JSON with a nested object', async function () {
     let properties = [ 'apiKey', 'password', 'phone' ];
     let redactyl = new Redactyl({ 'properties': properties });

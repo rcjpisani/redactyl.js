@@ -37,5 +37,7 @@ jobs:
           npm ci
       - name: npm test
         run: npm run test
+      - name: nyc report
+        run: npm run test:report
       - name: Upload coverage report
         run: bash <(curl -s https://codecov.io/bash) -F unit -s coverage/lcov.info

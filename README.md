@@ -61,7 +61,7 @@ const redacted = redactyl.redact(data);
 ### Constructor `Options` - *Object*
 - `properties` - `Array` - An array of property names that should be redacted.
 - `text` - `String` - Custom text to replace the redacted properties with.
-- `replacer` - `Function` - Custom replacer function that alters the behavior of the stringification process
+- `replacer` - `Function` - Custom replacer function that alters the behavior of the [stringification process](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#the_replacer_parameter|MDN)
 
 ### API
 `addProperties`(`properties`)
@@ -71,7 +71,7 @@ Add the names of properties that should be redacted.
 Set the text to replace the redacted properties with. Default: [REDACTED]
 
 `setReplacer`(`function`)
-Set the replacer function, altering the behavior of the stringification process
+Set the replacer function, altering the behavior of the [stringification process](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#the_replacer_parameter|MDN)
 
 `redact`(`json`)
 Traverse through the specified JSON and replace *all* properties that match the property names set through the constructor options object, or the `setText` function.

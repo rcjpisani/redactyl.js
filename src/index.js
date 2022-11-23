@@ -1,13 +1,19 @@
 'use strict';
 
+const getReplacer = require('./replacer');
+
 class Redactyl {
   constructor (options) {
     this.options = options || {};
     this.properties = [];
     this.text = '[REDACTED]';
+    this.replacer = getReplacer();
 
     this.addProperties(this.options.properties);
     this.setText(this.options.text);
+
+    if (this.options.replacer)
+      this.setReplacer(this.options.replacer);
   }
 
   addProperties(properties) {
@@ -25,13 +31,22 @@ class Redactyl {
   }
 
   isObject(property) {
-    return (typeof property) === 'object' && !Array.isArray(property);
+    return (typeof property) === 'object' && !Array.isArray(property) && property !== null;
   }
 
   setText(text) {
     if ((typeof text) !== 'string') return this;
 
     this.text = text;
+    return this;
+  }
+
+  setReplacer(fn) {
+    if ((typeof fn) !== 'function') {
+      throw new TypeError('Using a custom replacer expects a function to be passed');
+    }
+
+    this.replacer = fn;
     return this;
   }
 
@@ -42,7 +57,7 @@ class Redactyl {
       throw new TypeError('A valid JSON object must be specified');
     }
 
-    let redacted = JSON.parse(JSON.stringify(json));
+    let redacted = JSON.parse(JSON.stringify(json, this.replacer));
 
     for (let prop in redacted) {
       if (this.properties.includes(prop)) {
@@ -51,9 +66,7 @@ class Redactyl {
 
       if (Array.isArray(redacted[prop])) {
         redacted[prop].forEach((value, index) => {
-          if (this.isObject(value)) {
-            redacted[prop][index] = this.redact(value);
-          }
+          redacted[prop][index] = this.redact(value);
         });
       } else if (this.isObject(redacted[prop])) {
         redacted[prop] = this.redact(redacted[prop]);

@@ -7,6 +7,8 @@ const Redactyl = require('..');
 
 const DEFAULT_TEXT = '[REDACTED]';
 const CUSTOM_TEXT = '[SECURED]';
+const REPLACER_ERROR = 'Using a custom replacer expects a function to be passed';
+const CIRCULAR_TEXT = '[CIRCULAR]';
 
 describe('Redactyl test suite', function () {
   it('Should export the module', async function () {
@@ -83,12 +85,15 @@ describe('Redactyl test suite', function () {
     let properties = [ 'apiKey', 'password', 'phone' ];
     let redactyl = new Redactyl({ 'properties': properties });
 
+    let error = null;
     try {
-      let redacted = redactyl.redact([]);
+      redactyl.redact('invalid');
     } catch (err) {
-      expect(err).to.exist;
-      expect(err.constructor.name).to.equal('TypeError');
+      error = err;
     }
+
+    expect(error).to.not.equal(null);
+    expect(error.constructor.name).to.equal('TypeError');
   });
 
   it('Should redact shallow JSON', async function () {
@@ -122,6 +127,62 @@ describe('Redactyl test suite', function () {
         'password': 'P@$$w0rd',
         'phone': 1234567890
       } ]
+    };
+
+    let redacted = redactyl.redact(json);
+
+    expect(redactyl.redact.calledTwice).to.equal(true);
+    expect(typeof redacted).to.equal('object');
+    for (let prop in redacted.arr[0]) {
+      expect(redacted.arr[0][prop]).to.equal(DEFAULT_TEXT);
+    }
+  });
+
+  it('Should redact shallow JSON with a nested array', async function () {
+    let properties = [ 'apiKey', 'password', 'phone' ];
+    let redactyl = new Redactyl({ 'properties': properties });
+    sinon.spy(redactyl, 'redact');
+
+    let json = {
+      'arr': [
+        {
+          'apiKey': 'a1b2c3',
+          'password': 'P@$$w0rd',
+          'phone': 1234567890
+        },
+        [
+          {
+            'apiKey': 'a1b2c3',
+            'password': 'P@$$w0rd',
+            'phone': 1234567890
+          }
+        ]
+      ]
+    };
+
+    let redacted = redactyl.redact(json);
+
+    // expect(redactyl.redact.callCount).to.equal(4);
+    expect(typeof redacted).to.equal('object');
+    for (let prop in redacted.arr[0]) {
+      expect(redacted.arr[0][prop]).to.equal(DEFAULT_TEXT);
+    }
+    for (let prop in redacted.arr[1][0]) {
+      expect(redacted.arr[1][0][prop]).to.equal(DEFAULT_TEXT);
+    }
+  });
+
+  it('Should redact shallow JSON with an array', async function () {
+    let properties = [ 'apiKey', 'password', 'phone' ];
+    let redactyl = new Redactyl({ 'properties': properties });
+    sinon.spy(redactyl, 'redact');
+
+    let json = {
+      'arr': [{
+        'apiKey': 'a1b2c3',
+        'password': 'P@$$w0rd',
+        'phone': 1234567890
+      }]
     };
 
     let redacted = redactyl.redact(json);
@@ -182,6 +243,66 @@ describe('Redactyl test suite', function () {
       for (const prop in item) {
         expect(item[prop]).to.equal(DEFAULT_TEXT);
       }
-    })
-  })
+    });
+  });
+
+  it('Should fail to set a custom replacer function, function not passed as options', async function () {
+    const options = { 'replacer': ['not', 'a', 'function'] };
+
+    try {
+      new Redactyl(options);
+    } catch (err) {
+      expect(err.name === TypeError.name);
+      expect(err.message === REPLACER_ERROR);
+    }
+  });
+
+  it('Should fail to set a custom replacer function, function using the setReplacer function', async function () {
+    const redactyl = new Redactyl();
+
+    try {
+      sinon.spy(redactyl, 'setReplacer');
+      redactyl.setReplacer(['not', 'a', 'function']);
+    } catch (err) {
+      expect(redactyl.setReplacer.callCount).to.equal(1);
+      expect(err.name === TypeError.name);
+      expect(err.message === REPLACER_ERROR);
+    }
+  });
+
+  it('Should set use a custom replacer function passed as options', async function () {
+    const fn = function () {};
+    const options = { 'replacer': fn };
+
+    const redactyl = new Redactyl(options);
+
+    expect(redactyl.replacer === fn);
+  });
+
+  it('Should set use a custom replacer function options', async function () {
+    const fn = function () {};
+
+    const redactyl = new Redactyl();
+
+    sinon.spy(redactyl, 'setReplacer');
+    redactyl.setReplacer(fn);
+
+    expect(redactyl.setReplacer.callCount).to.equal(1);
+    expect(redactyl.replacer).to.equal(fn);
+  });
+
+  it('Should replace circular references with the token "[CIRCULAR]"', async function () {
+    const properties = [ 'apiKey', 'password', 'phone' ];
+    const redactyl = new Redactyl({ 'properties': properties });
+
+    const json = {
+      'apiKey': 'a1b2c3',
+      'password': 'P@$$w0rd',
+      'phone': 1234567890
+    };
+    json.circular = json;
+
+    const redacted = redactyl.redact(json);
+    expect(redacted.circular).to.equal(CIRCULAR_TEXT);
+  });
 });

@@ -2,6 +2,10 @@
 // Project: https://github.com/rcjpisani/redactyl.js
 
 declare namespace Redactyl {
+  interface RedactData<Type extends object[] | object = any> {
+    <Type>(arg: Type): Type;
+  }
+
   interface Options {
     /**
      * An array of property names that should be redacted.
@@ -12,6 +16,12 @@ declare namespace Redactyl {
      * Custom text to replace the redacted properties with. Default: [REDACTED]
      */
     text?: string;
+
+    /**
+     * Custom replacer function
+     * @see {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#the_replacer_parameter|MDN}
+     */
+    replacer?: (key: string, value: RedactData) => RedactData;
   }
 }
 
@@ -25,7 +35,7 @@ declare class Redactyl {
    * .
    * @param input
    */
-  redact<T extends object[]|object = any>(input: T): T;
+  redact<T extends Redactyl.RedactData>(input: T): T;
 
   /**
    * Set the text to replace the redacted properties with. Default: [REDACTED]
@@ -40,6 +50,12 @@ declare class Redactyl {
    * @param properties Additional names of properties
    */
   addProperties(properties: string[]): Redactyl;
+
+  /**
+   * Set a custom replacer function for the stringification process
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#the_replacer_parameter|MDN}
+   */
+  setReplacer(fn: Redactyl.Options['replacer']): Redactyl;
 }
 
 export = Redactyl;

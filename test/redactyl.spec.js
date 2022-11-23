@@ -86,12 +86,15 @@ describe('Redactyl test suite', function () {
     let properties = [ 'apiKey', 'password', 'phone' ];
     let redactyl = new Redactyl({ 'properties': properties });
 
+    let error = null;
     try {
-      let redacted = redactyl.redact([]);
+      redactyl.redact('invalid');
     } catch (err) {
-      expect(err).to.exist;
-      expect(err.constructor.name).to.equal('TypeError');
+      error = err;
     }
+
+    expect(error).to.not.equal(null);
+    expect(error.constructor.name).to.equal('TypeError');
   });
 
   it('Should redact shallow JSON', async function () {
@@ -241,7 +244,7 @@ describe('Redactyl test suite', function () {
       for (const prop in item) {
         expect(item[prop]).to.equal(DEFAULT_TEXT);
       }
-    })
+    });
   });
 
   it('Should fail to set a custom replacer function, function not passed as options', async function () {

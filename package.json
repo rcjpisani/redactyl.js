@@ -6,7 +6,8 @@
   "types": "./src/index.d.ts",
   "scripts": {
     "test": "nyc mocha test/*.spec.js",
-    "test:report": "nyc report --reporter=lcov"
+    "test:report": "nyc report --reporter=lcov",
+    "benchmark": "node test/redactyl.perf.js"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,8 @@
   },
   "homepage": "https://github.com/rcjpisani/redactyl.js#readme",
   "devDependencies": {
+    "@types/benchmark": "^2.1.2",
+    "benchmark": "^2.1.4",
     "chai": "^4.2.0",
     "eslint": "^6.8.0",
     "mocha": "^10.1.0",

@@ -1,6 +1,6 @@
 {
   "name": "redactyl.js",
-  "version": "1.4.5",
+  "version": "1.5.0",
   "description": "Redact sensitive information from JSON for logging",
   "main": "index.js",
   "types": "./src/index.d.ts",

@@ -51,13 +51,13 @@ class Redactyl {
   }
 
   redact(json) {
-    let isObject = this.isObject(json);
+    const isObject = this.isObject(json);
 
     if (!isObject && !Array.isArray(json)) {
-      throw new TypeError('A valid JSON object must be specified');
+      return json;
     }
 
-    let redacted = JSON.parse(JSON.stringify(json, this.replacer));
+    const redacted = JSON.parse(JSON.stringify(json, this.replacer));
 
     for (let prop in redacted) {
       if (this.properties.includes(prop)) {

@@ -85,15 +85,9 @@ describe('Redactyl test suite', function () {
     let properties = [ 'apiKey', 'password', 'phone' ];
     let redactyl = new Redactyl({ 'properties': properties });
 
-    let error = null;
-    try {
-      redactyl.redact('invalid');
-    } catch (err) {
-      error = err;
-    }
+    const redacted = redactyl.redact('any string wLYm0Vthq');
 
-    expect(error).to.not.equal(null);
-    expect(error.constructor.name).to.equal('TypeError');
+    expect(redacted).to.equal('any string wLYm0Vthq');
   });
 
   it('Should redact shallow JSON', async function () {
@@ -243,6 +237,32 @@ describe('Redactyl test suite', function () {
       for (const prop in item) {
         expect(item[prop]).to.equal(DEFAULT_TEXT);
       }
+    });
+  });
+
+  it('Should redact array of strings', async function () {
+    const properties = [ 'sensitiveData' ];
+    const redactyl = new Redactyl({ 'properties': properties });
+
+    const json = {
+      sensitiveData: [
+        'RxcKQr3',
+        'jvicULO'
+      ],
+      nonSensitive: [
+        'J2AZps8w',
+        'YVTr9O1'
+      ]
+    };
+
+    const redacted = redactyl.redact(json);
+
+    expect(redacted).to.deep.equal({
+      sensitiveData: DEFAULT_TEXT,
+      nonSensitive: [
+        'J2AZps8w',
+        'YVTr9O1'
+      ]
     });
   });
 
